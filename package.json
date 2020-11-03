@@ -1,0 +1,39 @@
+{
+  "name": "My-APP_front",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
+    "precommit": "yarn run lint",
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate"
+  },
+  "dependencies": {
+    "@nuxt/config": "^2.14.7",
+    "@nuxt/typescript-runtime": "^2.0.0",
+    "@nuxtjs/axios": "^5.12.2",
+    "core-js": "^3.6.5",
+    "install": "^0.13.0",
+    "nuxt": "^2.14.7",
+    "ts-node": "^9.0.0",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.0.2"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.14.6",
+    "@nuxt/typescript-build": "^2.0.3",
+    "@nuxtjs/eslint-config": "^3.1.0",
+    "@nuxtjs/eslint-config-typescript": "^3.0.0",
+    "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/vuetify": "^1.11.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-nuxt": "^1.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "i": "^0.3.6",
+    "prettier": "^2.1.2"
+  }
+}
