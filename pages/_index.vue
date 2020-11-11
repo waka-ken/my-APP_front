@@ -1,3 +1,4 @@
+<!-- pages/index.vue -->
 <template>
     <section class="container">
         <h1>Todoリスト</h1>
@@ -73,7 +74,7 @@
     </section>
 </template>
 <script>
-// import { mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     data() {
@@ -84,37 +85,38 @@ export default {
         };
     },
     computed: {
-        // ...mapState(['todos']),
-        // display_todos() {
-        //     if (this.find_flg) {
-        //         const arr = [];
-        //         // const data = this.$axios.$get('item');
-        //         const data = this.todos;
-        //         data.forEach((element) => {
-        //             if (element.state === this.find_state) {
-        //                 arr.push(element);
-        //             }
-        //         });
-        //         return arr;
-        //     } else {
-        //         return this.todos;
-        //     }
-        // },
+        ...mapState(['todos']),
+
+        display_todos() {
+            if (this.find_flg) {
+                const arr = [];
+                // const data = this.$axios.$get('item');
+                const data = this.todos;
+                data.forEach((element) => {
+                    if (element.state === this.find_state) {
+                        arr.push(element);
+                    }
+                });
+                return arr;
+            } else {
+                return this.todos;
+            }
+        },
     },
     methods: {
         insert() {
             if (this.content !== '') {
-                this.$axios.$post('item');
+                this.$axios.$get('item');
                 // this.$store.commit('insert', { content: this.content }),
                 // (this.content = '');
             }
         },
-        // remove(todo) {
-        //     this.$store.commit('remove', todo);
-        // },
-        // changeState(todo) {
-        //     this.$store.commit('changeState', todo);
-        // },
+        remove(todo) {
+            this.$store.commit('remove', todo);
+        },
+        changeState(todo) {
+            this.$store.commit('changeState', todo);
+        },
         find(findState) {
             this.find_state = findState;
             this.find_flg = true;

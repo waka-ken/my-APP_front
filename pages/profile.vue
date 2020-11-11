@@ -5,9 +5,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import User from '../models/User'
-import Profile from '../components/Profile.vue'
+import { Component, Vue } from 'vue-property-decorator';
+import axios from 'axios';
+import User from '../models/User';
+import Profile from '../components/Profile.vue';
 
 @Component({
     components: {
@@ -15,17 +16,10 @@ import Profile from '../components/Profile.vue'
     },
 })
 export default class ProfilePage extends Vue {
-    users: User[] = [
-        {
-            id: 1,
-            name: '太郎',
-            age: 15,
-        },
-        {
-            id: 2,
-            name: '二郎',
-            age: 13,
-        },
-    ]
+    users: User[] = [];
+    async created() {
+        const res = await axios.get('http://localhost:4000/');
+        this.users = res.data;
+    }
 }
 </script>
