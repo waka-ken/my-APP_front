@@ -1,4 +1,4 @@
-import colors from 'vuetify/es5/util/colors'
+import colors from 'vuetify/es5/util/colors';
 
 export default {
     // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -6,14 +6,26 @@ export default {
         titleTemplate: '%s - My-APP_front',
         title: 'My-APP_front',
         meta: [
-            { charset: 'utf-8' },
+            {
+                charset: 'utf-8',
+            },
             {
                 name: 'viewport',
                 content: 'width=device-width, initial-scale=1',
             },
-            { hid: 'description', name: 'description', content: '' },
+            {
+                hid: 'description',
+                name: 'description',
+                content: '',
+            },
         ],
-        link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+        link: [
+            {
+                rel: 'icon',
+                type: 'image/x-icon',
+                href: '/favicon.ico',
+            },
+        ],
     },
 
     // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -38,6 +50,9 @@ export default {
         // https://go.nuxtjs.dev/axios
         '@nuxtjs/axios',
     ],
+    //     // ここにオプションが記述できる
+    //     locales: ['ja']
+    // ],
 
     // Axios module configuration (https://go.nuxtjs.dev/config-axios)
     axios: {},
@@ -63,4 +78,4 @@ export default {
 
     // Build Configuration (https://go.nuxtjs.dev/config-build)
     build: {},
-}
+};

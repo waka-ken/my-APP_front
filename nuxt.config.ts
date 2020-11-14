@@ -1,4 +1,4 @@
-import { Configuration } from '@nuxt/types'
+import { Configuration } from '@nuxt/types';
 
 const nuxtConfig: Configuration = {
     mode: 'universal',
@@ -62,5 +62,5 @@ const nuxtConfig: Configuration = {
         // extend(config, ctx) {},
     },
     serverMiddleware: [{ path: '/api', handler: '~/server/index.ts' }],
-}
-module.exports = nuxtConfig
+};
+module.exports = nuxtConfig;

@@ -1,48 +1,14 @@
 <template>
-    <section class="container">
-        <h1>Todoリスト</h1>
+    <div>
+        <h1>TODOリスト</h1>
         <div class="addArea">
-            <input
-                v-model="content"
-                type="text"
-                name="addName"
-                placeholder="タスクを入力してください"
-            />
-            <button class="button button--green" @click="insert">追加</button>
+            <input v-model="model.todo" type="text" placeholder="タスクを入力してください" />
+            <button class="button button--green" @click="addItem">追加</button>
         </div>
-        <div class="Filter">
-            <button
-                class="button button--gray"
-                :class="{ 'is-active': !find_flg }"
-                @click="flag_reset"
-            >
-                全て
-            </button>
-            <button
-                class="button button--gray"
-                :class="{ 'is-active': find_flg && find_state == '作業前' }"
-                @click="find('作業前')"
-            >
-                作業前
-            </button>
-            <button
-                class="button button--gray"
-                :class="{ 'is-active': find_flg && find_state == '作業中' }"
-                @click="find('作業中')"
-            >
-                作業中
-            </button>
-            <button
-                class="button button--gray"
-                :class="{ 'is-active': find_flg && find_state == '完了' }"
-                @click="find('完了')"
-            >
-                完了
-            </button>
-        </div>
-        <table class="Lists">
+        <table>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>タスク</th>
                     <th>登録日時</th>
                     <th>状態</th>
@@ -50,81 +16,62 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in display_todos" :key="index">
-                    <td>{{ item.content }}</td>
-                    <td>{{ item.created }}</td>
+                <tr v-for="(item, index) in todoList" :key="index">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.todo }}</td>
+                    <td>{{ item.createdAt }}</td>
                     <td>
-                        <button
-                            class="button"
-                            :class="{
-                                'button--yet': item.state == '作業前',
-                                'button--progress': item.state == '作業中',
-                                'button--done': item.state == '完了',
-                            }"
-                            @click="changeState(item)"
-                        >
-                            {{ item.state }}
+                        <button @click="changeDone(item)">
+                            {{ item.done }}
                         </button>
                     </td>
-                    <td><button class="button button--red" @click="remove(item)">削除</button></td>
+                    <td>
+                        <button class="button button--red">削除</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
-    </section>
+    </div>
 </template>
-<script>
-// import { mapState } from 'vuex';
 
-export default {
-    data() {
+<script lang="ts">
+import Vue from 'vue';
+import { IItem, ICreateTodoDto, IUpdateTodoDto } from '@/models/Item';
+
+export default Vue.extend({
+    data(): { todoList: IItem[]; model: ICreateTodoDto | IUpdateTodoDto } {
         return {
-            content: '',
-            find_state: '',
-            find_flg: false,
+            todoList: [],
+            model: {
+                todo: '',
+                done: false,
+            },
         };
     },
-    computed: {
-        // ...mapState(['todos']),
-        // display_todos() {
-        //     if (this.find_flg) {
-        //         const arr = [];
-        //         // const data = this.$axios.$get('item');
-        //         const data = this.todos;
-        //         data.forEach((element) => {
-        //             if (element.state === this.find_state) {
-        //                 arr.push(element);
-        //             }
-        //         });
-        //         return arr;
-        //     } else {
-        //         return this.todos;
-        //     }
-        // },
+
+    async created() {
+        await this.getItems();
     },
+
     methods: {
-        insert() {
-            if (this.content !== '') {
-                this.$axios.$post('item');
-                // this.$store.commit('insert', { content: this.content }),
-                // (this.content = '');
-            }
+        async getItems() {
+            this.todoList = await this.$axios.$get('http://localhost:4000/item/');
         },
-        // remove(todo) {
-        //     this.$store.commit('remove', todo);
-        // },
-        // changeState(todo) {
-        //     this.$store.commit('changeState', todo);
-        // },
-        find(findState) {
-            this.find_state = findState;
-            this.find_flg = true;
+        async addItem() {
+            await this.$axios.$post('http://localhost:4000/item', this.model);
+            await this.getItems();
+            this.model.todo = '';
         },
-        flag_reset() {
-            this.find_flg = false;
+        async changeDone(item: IItem) {
+            const data: ICreateTodoDto = {
+                todo: item.todo,
+                done: !item.done,
+            };
+            await this.$axios.$put(`http://localhost:4000/item/${item.id}`, data);
+            await this.getItems();
         },
     },
-};
+});
 </script>
-<style>
-/* 省略 */
-</style>
+
+<style></style>

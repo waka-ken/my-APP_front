@@ -17,6 +17,7 @@
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "install": "^0.13.0",
+    "moment": "^2.29.1",
     "nuxt": "^2.14.7",
     "ts-node": "^9.0.0",
     "vue-class-component": "^7.2.6",
