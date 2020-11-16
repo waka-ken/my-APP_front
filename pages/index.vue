@@ -26,7 +26,7 @@
                         </button>
                     </td>
                     <td>
-                        <button class="button button--red">削除</button>
+                        <button class="button button--red" @click="deleteItem(item)">削除</button>
                     </td>
                 </tr>
             </tbody>
@@ -68,6 +68,10 @@ export default Vue.extend({
                 done: !item.done,
             };
             await this.$axios.$put(`http://localhost:4000/item/${item.id}`, data);
+            await this.getItems();
+        },
+        async deleteItem(item: IItem) {
+            await this.$axios.$delete(`http://localhost:4000/item/${item.id}`);
             await this.getItems();
         },
     },
