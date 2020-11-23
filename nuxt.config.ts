@@ -46,6 +46,10 @@ const nuxtConfig: Configuration = {
         '@nuxtjs/axios',
         '@nuxtjs/pwa',
         '@nuxtjs/eslint-module',
+        '@nuxtjs/axios',
+        '@nuxtjs/auth',
+        'cookie-universal-nuxt',
+        { alias: 'cookies' },
     ],
     /*
      ** Axios module configuration
@@ -62,5 +66,18 @@ const nuxtConfig: Configuration = {
         // extend(config, ctx) {},
     },
     serverMiddleware: [{ path: '/api', handler: '~/server/index.ts' }],
+    auth: {
+        strategies: {
+            local: {
+                endpoints: {
+                    login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+                    logout: { url: '/api/auth/logout', method: 'post' },
+                    user: { url: '/api/auth/user', method: 'get', propertyName: 'user' },
+                },
+                // tokenRequired: true,
+                // tokenType: 'bearer'
+            },
+        },
+    },
 };
 module.exports = nuxtConfig;
