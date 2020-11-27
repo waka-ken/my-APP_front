@@ -31,7 +31,23 @@ export const mutations: MutationTree<State> = {
     },
 };
 
-export const actions: ActionTree<State, RootState> = {};
+export const actions: ActionTree<State, RootState> = {
+    setToken(context, token) {
+        context.commit('setToken', token);
+    },
+
+    async signupUser(_, params) {
+        try {
+            const user = await this.$axios.$post('localhost:4000/user/login', params).catch((e) => {
+                const { message, code } = e.response.data;
+                throw new BadRequest(message, code);
+            });
+            return Promise.resolve(user);
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    },
+};
 
 export const getters: GetterTree<State, RootState> = {
     token(state) {
