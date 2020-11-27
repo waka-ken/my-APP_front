@@ -1,20 +1,52 @@
 <template>
     <div>
         <h1>新規ユーザー作成</h1>
-        <form @submit.prevent="addUser">
+        <form>
             <div class="form-group">
-                <label for="email">name:</label>
-                <input v-model="user.name" />
+                <label for="name">name:</label>
+                <input
+                    id="name"
+                    v-model="user.name"
+                    class="block"
+                    type="text"
+                    name="name"
+                    placeholder="name"
+                />
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input v-model="user.password" type="password" />
+                <input
+                    id="password"
+                    v-model="user.password"
+                    class="block"
+                    type="password"
+                    name="password"
+                    placeholder="password"
+                />
             </div>
             <div class="form-group">
-                <label for="password">age:</label>
-                <input v-model="user.age" type="number" />
+                <label for="password-confirmation">Password Confirmation:</label>
+                <input
+                    id="password-confirmation"
+                    v-model="user.password_confirmation"
+                    class="block"
+                    type="password"
+                    name="password-confirmation"
+                    placeholder="password confirmation"
+                />
             </div>
-            <button type="submit">送信</button>
+            <div class="form-group">
+                <label for="age">age:</label>
+                <input
+                    id="age"
+                    v-model="user.age"
+                    class="block"
+                    type="number"
+                    name="age"
+                    placeholder="age"
+                />
+            </div>
+            <button type="submit" @click="onSubmit()">送信</button>
         </form>
         <table>
             <thead>
@@ -26,13 +58,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(acount, index) in userList" :key="index">
-                    <td>{{ acount.id }}</td>
-                    <td>{{ acount.name }}</td>
-                    <td>{{ acount.password }}</td>
-                    <td>{{ acount.age }}</td>
+                <tr v-for="(account, index) in userList" :key="index">
+                    <td>{{ account.id }}</td>
+                    <td>{{ account.name }}</td>
+                    <td>{{ account.password }}</td>
+                    <td>{{ account.age }}</td>
                     <!-- <td>
-                            <button class="button button--red" @click="deleteUser(acount)">
+                            <button class="button button--red" @click="deleteUser(account)">
                                 削除
                             </button>
                         </td> -->
@@ -43,35 +75,63 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { IUser, ICreateUserDTO } from '../models/User';
+import { Component, Vue } from 'nuxt-property-decorator';
+// import { IUser, ICreateUserDTO } from '~/models/User';
+import { ApplicationError, BadRequest } from '~/types/error';
 
-export default Vue.extend({
-    data(): { userList: IUser[]; user: ICreateUserDTO } {
+@Component
+export default class PageSignup extends Vue {
+    head() {
         return {
-            userList: [],
-            user: {
-                name: '',
-                password: '',
-                age: null,
-            },
+            titleTemplate: '会員登録 | %s',
         };
-    },
-    async created() {
-        await this.getUsers();
-    },
+    }
 
-    methods: {
-        async getUsers() {
-            this.userList = await this.$axios.$get('http://localhost:4000/user/');
-        },
-        async addUser() {
-            await this.$axios.$post('http://localhost:4000/user/', this.user);
-            await this.getUsers();
-            this.user.name = '';
-            this.user.password = '';
-            this.user.age = 0;
-        },
-    },
-});
+    errors: Array<ApplicationError> = [];
+
+    user: any = {
+        name: '',
+        password: '',
+        password_confirmation: '',
+        age: null,
+    };
+
+    userList: any = [];
+
+    // data(): { userList: IUser[]; user: ICreateUserDTO } {
+    //     return {
+    //         userList: [],
+    //         user: {
+    //             name: '',
+    //             password: '',
+    //             password_confirmation: '',
+    //             age: null,
+    //         },
+    //     };
+    // }
+
+    isSignUpAfter: boolean = false;
+
+    async onSubmit() {
+        try {
+            this.isSignUpAfter = false;
+            this.errors = [];
+            // バリデーション
+            // if (this.form.account.length === 0) {
+            //     throw new BadRequest('アカウントが入力されていません');
+            // }
+            if (this.user.name.length === 0) {
+                throw new BadRequest('名前が入力されていません');
+            }
+            if (this.user.password.length === 0) {
+                throw new BadRequest('が入力されていません');
+            }
+            // 新規会員情報送信
+            await this.$store.dispatch('user/signupUser', this.user);
+            this.isSignUpAfter = true;
+        } catch (e) {
+            this.errors.push(e);
+        }
+    }
+}
 </script>
