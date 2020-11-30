@@ -6,7 +6,7 @@
                 <label for="name">name:</label>
                 <input
                     id="name"
-                    v-model="user.name"
+                    v-model="from.name"
                     class="block"
                     type="text"
                     name="name"
@@ -14,39 +14,28 @@
                 />
             </div>
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="email">email:</label>
                 <input
-                    id="password"
-                    v-model="user.password"
+                    id="email"
+                    v-model="from.email"
                     class="block"
-                    type="password"
-                    name="password"
-                    placeholder="password"
-                />
-            </div>
-            <div class="form-group">
-                <label for="password-confirmation">Password Confirmation:</label>
-                <input
-                    id="password-confirmation"
-                    v-model="user.password_confirmation"
-                    class="block"
-                    type="password"
-                    name="password-confirmation"
-                    placeholder="password confirmation"
+                    type="email"
+                    name="email"
+                    placeholder="email"
                 />
             </div>
             <div class="form-group">
                 <label for="age">age:</label>
                 <input
                     id="age"
-                    v-model="user.age"
+                    v-model="from.age"
                     class="block"
                     type="number"
                     name="age"
                     placeholder="age"
                 />
             </div>
-            <button type="submit" @click="onSubmit()">送信</button>
+            <button type="submit" @click="onSubmit">送信</button>
         </form>
         <table>
             <thead>
@@ -64,10 +53,10 @@
                     <td>{{ account.password }}</td>
                     <td>{{ account.age }}</td>
                     <!-- <td>
-                            <button class="button button--red" @click="deleteUser(account)">
-                                削除
-                            </button>
-                        </td> -->
+                <button class="button button--red" @click="deleteUser(account)">
+                    削除
+                </button>
+            </td> -->
                 </tr>
             </tbody>
         </table>
@@ -89,10 +78,11 @@ export default class PageSignup extends Vue {
 
     errors: Array<ApplicationError> = [];
 
-    user: any = {
+    from: any = {
         name: '',
+        email: '',
         password: '',
-        password_confirmation: '',
+        // password_confirmation: '',
         age: null,
     };
 
@@ -120,15 +110,15 @@ export default class PageSignup extends Vue {
             // if (this.form.account.length === 0) {
             //     throw new BadRequest('アカウントが入力されていません');
             // }
-            if (this.user.name.length === 0) {
+            if (this.from.name.length === 0) {
                 throw new BadRequest('名前が入力されていません');
             }
-            if (this.user.password.length === 0) {
-                throw new BadRequest('が入力されていません');
+            if (this.from.email.length === 0) {
+                throw new BadRequest('メールアドレスが入力されていません');
             }
             // 新規会員情報送信
-            await this.$store.dispatch('user/signupUser', this.user);
-            this.isSignUpAfter = true;
+            await this.$store.dispatch('user/signupUser', this.from);
+            // this.isSignUpAfter = true;
         } catch (e) {
             this.errors.push(e);
         }

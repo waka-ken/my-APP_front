@@ -3,6 +3,7 @@ export interface IItem {
     todo: string;
     done: boolean;
 }
+
 export interface IUser {
     id: number;
     name: string;

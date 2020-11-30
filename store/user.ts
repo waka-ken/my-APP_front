@@ -35,13 +35,16 @@ export const actions: ActionTree<State, RootState> = {
     setToken(context, token) {
         context.commit('setToken', token);
     },
-
     async signupUser(_, params) {
+        console.log('ttttt');
         try {
-            const user = await this.$axios.$post('localhost:4000/user/login', params).catch((e) => {
-                const { message, code } = e.response.data;
-                throw new BadRequest(message, code);
-            });
+            const user = await this.$axios
+                .$post('http://localhost:4000/user', params)
+                .catch((e) => {
+                    const { message, code } = e.response.data;
+                    throw new BadRequest(message, code);
+                });
+            console.log(user);
             return Promise.resolve(user);
         } catch (e) {
             return Promise.reject(e);
